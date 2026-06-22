@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Szymon/Scenes/Menu.unity
+    guid: c3c326c2cffc37c4db5f81051acbc507
+  - enabled: 1
+    path: Assets/Szymon/SampleScene 1.unity
+    guid: 9c0ffd57f0d38184bb353b578dbd1f9b
   m_configObjects: {}

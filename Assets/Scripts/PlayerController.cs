@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PlayerController : MonoBehaviour
 {
+    private Animator animator;
     private Rigidbody rb;
 
     [Header("Ruch na boki (Lanes)")]
@@ -19,19 +19,51 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isSliding = false;
 
-    // Oryginalna skala i collider do zmniejszania podczas slide'u
-    private Vector3 originalScale;
+    [Header("Stan Gracza")]
+    private bool isDead = false;
+
+    // Referencje do colliderów i zapis ich oryginalnych wymiarów
     private SphereCollider sphereCollider;
+    private BoxCollider boxCollider;
+
+    private Vector3 originalSphereCenter;
+    private float originalSphereRadius;
+
+    private Vector3 originalBoxCenter;
+    private Vector3 originalBoxSize;
 
     void Start()
     {
+        animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+
         sphereCollider = GetComponent<SphereCollider>();
-        originalScale = transform.localScale;
+        boxCollider = GetComponent<BoxCollider>();
+
+        if (sphereCollider != null)
+        {
+            originalSphereCenter = sphereCollider.center;
+            originalSphereRadius = sphereCollider.radius;
+        }
+
+        if (boxCollider != null)
+        {
+            originalBoxCenter = boxCollider.center;
+            originalBoxSize = boxCollider.size;
+        }
     }
 
     void Update()
     {
+        if (isDead) return;
+
+        // TESTOWE AKTYWOWANIE ŚMIERCI KLAWISZEM 'K'
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Die();
+            return;
+        }
+
         // 1. WYBÓR LINII (Sterowanie lewo/prawo)
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
@@ -57,51 +89,77 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Sprawdzamy, czy kulka dotyka ziemi
+        if (isDead) return;
+
         isGrounded = Physics.Raycast(transform.position, Vector3.down, sphereCollider.bounds.extents.y + 0.1f);
 
-        // Obliczanie docelowej pozycji Z (zamieniliśmy X na Z)
-        // 0 = Lewo, 1 = Środek, 2 = Prawo
-        // Jeśli naciśniesz w lewo, gracz przesunie się w ujemną stronę osi Z
         float targetZ = (currentLane - 1) * laneDistance;
 
-        // Obliczamy wektor przesunięcia na boki (teraz celujemy w oś Z)
         Vector3 targetPosition = new Vector3(transform.position.x, transform.position.y, targetZ);
         Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, laneSwitchSpeed * Time.fixedDeltaTime);
 
-        // Przypisujemy pozycję: 
-        // X - zostaje nienaruszone (lub kontrolowane przez ruch do przodu)
-        // Y - zostaje dla grawitacji Rigidbody
-        // Z - płynnie zmienia się na nową linię
         rb.position = new Vector3(transform.position.x, rb.position.y, newPosition.z);
     }
 
     void Jump()
     {
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        animator.SetTrigger("jump_btn");
     }
 
-    System.Collections.IEnumerator SlideRoutine()
+    IEnumerator SlideRoutine()
     {
         isSliding = true;
+        animator.SetTrigger("slide_btn");
 
-        // Wizualne i fizyczne zmniejszenie kulki (spłaszczenie), aby przeszła pod przeszkodą
-        transform.localScale = new Vector3(originalScale.x, originalScale.y * 0.5f, originalScale.z);
+        if (sphereCollider != null)
+        {
+            sphereCollider.radius = originalSphereRadius * 0.5f;
+            sphereCollider.center = new Vector3(originalSphereCenter.x, originalSphereCenter.y * 0.5f, originalSphereCenter.z);
+        }
+
+        if (boxCollider != null)
+        {
+            boxCollider.size = new Vector3(originalBoxSize.x, originalBoxSize.y * 0.5f, originalBoxSize.z);
+            boxCollider.center = new Vector3(originalBoxCenter.x, originalBoxCenter.y - (originalBoxSize.y * 0.25f), originalBoxCenter.z);
+        }
 
         yield return new WaitForSeconds(slideDuration);
 
-        // Powrót do normalnych wymiarów
-        transform.localScale = originalScale;
+        if (sphereCollider != null)
+        {
+            sphereCollider.radius = originalSphereRadius;
+            sphereCollider.center = originalSphereCenter;
+        }
+
+        if (boxCollider != null)
+        {
+            boxCollider.size = originalBoxSize;
+            boxCollider.center = originalBoxCenter;
+        }
+
         isSliding = false;
     }
 
-    // 4. WYKRYWANIE KOLIZJI Z PRZESZKODAMI (Trigger)
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        animator.SetTrigger("die_btn");
+        rb.velocity = Vector3.zero;
+
+        Debug.Log("Gracz zginął!");
+    }
+
+    // 4. WYKRYWANIE KOLIZJI Z KOLCAMI (Trigger)
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle"))
+        // Zmieniono warunek: teraz sprawdzamy tag "Spike"
+        if (other.CompareTag("Spike"))
         {
-            Debug.Log("Uderzenie w przeszkodę! Tutaj wywołaj GameManager.");
-            // Przykładowe wywołanie: GameManager.instance.GameOver();
+            Debug.Log("Uderzenie w kolce (Spike)!");
+            Die();
         }
     }
 }
