@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &2029263531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113277672282883397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37dd70f771915b64189d8108b997337d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterPrefabs:
+  - {fileID: 6329119762463122685, guid: b4fb3646a3202b4408eeed9f7fecd2c8, type: 3}
+  - {fileID: 7524580254550265657, guid: ca1c1a909ff734346b33021023748aac, type: 3}
+  - {fileID: 70644725134532061, guid: 0e79f0bc5948fc1418c030ea88b72ee4, type: 3}
+--- !u!114 &4746521162151458056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113277672282883397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d02be4b4ae9c804a8b0db22c76ccebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laneDistance: 3
+  laneSwitchSpeed: 10
+  jumpForce: 7
+  slideDuration: 1
 --- !u!1001 &2806684957018555268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10,6 +42,11 @@ PrefabInstance:
     - target: {fileID: 2837593668618127041, guid: 4c6ace58d0bf8ce459144f298f1e036e,
         type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837593668618127041, guid: 4c6ace58d0bf8ce459144f298f1e036e,
+        type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2837593668618127065, guid: 4c6ace58d0bf8ce459144f298f1e036e,
@@ -82,5 +119,13 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.47
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2837593668618127064, guid: 4c6ace58d0bf8ce459144f298f1e036e, type: 3}
+    - {fileID: 2837593668618127070, guid: 4c6ace58d0bf8ce459144f298f1e036e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4c6ace58d0bf8ce459144f298f1e036e, type: 3}
+--- !u!1 &113277672282883397 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2837593668618127041, guid: 4c6ace58d0bf8ce459144f298f1e036e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2806684957018555268}
+  m_PrefabAsset: {fileID: 0}
