@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Szymon/Scenes/Menu.unity
-    guid: c3c326c2cffc37c4db5f81051acbc507
+    path: Assets/Mikolaj/Scenes/Menu 1.unity
+    guid: 652aad287d129584ea0143361e344e11
   - enabled: 1
-    path: Assets/Szymon/SampleScene 1.unity
-    guid: 9c0ffd57f0d38184bb353b578dbd1f9b
+    path: Assets/Main Scene/Main Scene.unity
+    guid: ad31ca25101d33c498b541b3f91d1660
+  - enabled: 1
+    path: Assets/RADEK/Prefabs/Scenes/GameOverScreen.unity
+    guid: f08d3d53826e90e488e49dfb32b2c473
   m_configObjects: {}
