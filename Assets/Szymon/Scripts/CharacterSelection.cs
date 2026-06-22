@@ -20,6 +20,6 @@ public class CharacterSelection : MonoBehaviour
     public void StartGame()
     {
         // Wpisz dokładną nazwę swojej sceny z grą (zamiast "SampleScene")
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("SampleScene 1");
     }
 }
