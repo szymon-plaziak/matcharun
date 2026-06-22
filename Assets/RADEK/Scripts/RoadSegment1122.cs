@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RoadSegment : MonoBehaviour
+public class RoadSegment1122 : MonoBehaviour
 {
     public Transform endPoint;
     public GameObject[] obstacleLayouts;
